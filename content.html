@@ -2,7 +2,40 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="stylesheet" type="text/css" href="../style.css" />
+
+<script type='text/javascript'>
+  function policyObj(policyName, policyType, addr, mask) {
+      this.policyName = policyName;
+	  this.policyType = policyType;
+	  this.addr = addr;
+	  this.mask = mask;
+  }
+  
+  var policyList =  new Array();
+  
+  function printArray() {
+      for (var i = 0; i < policyList.length; i++) {
+	      document.write("<tr>\n");
+		  document.write("<td>" + policyList[i].policyName + "</td>\n");
+		  if(policyList[i].policyType == "0") {
+			  document.write("<td>IP</td>\n");
+		  }
+		  else {
+		      document.write("<td>Domain</td>\n");
+		  }
+		  document.write("<td>" + policyList[i].addr + "</td>\n");
+		  document.write("<td>" + policyList[i].mask + "</td>\n");
+		  document.write("<td></td>")
+	  	  document.write("</tr>\n");
+	  }
+	  
+	  if(policyList.length == 0) {
+		document.write("<td colspan=5>No policies</td>");
+	  }
+  }
+  <!--cgi:policy-->
+</script>
 </head>
 
 <body>
@@ -14,19 +47,19 @@
         	<h2>Policy List</h2>
 			<table border="0" cellpadding="5" cellspacing="5" width="100%">
 				<tr>
-				<th>Policy Name</th>
-				<th>Type</th>
-				<th>IP/Domain</th>
-				<th>Network Mask</th>
-				<th>Configure</th>
+				<td>Policy Name</td>
+				<td>Type</td>
+				<td>IP/Domain</td>
+				<td>Network Mask</td>
+				<td>Configure</td>
 				</tr>
-				<tr>
-				<td>rtest</td>
-				<td>IP</td>
-				<td>1.1.1.1</td>
-				<td>255.255.255.0</td>
-				</tr>
-			</table> 
+
+				<script type='text/javascript'>
+				<!--
+					printArray();
+				-->
+				</script>
+			</table>
 			<table border="0">
 				<tr>
 				<td><button type="button">Add Policy...</button></td>
