@@ -34,6 +34,10 @@
 		document.write("<td colspan=5>No policies</td>");
 	  }
   }
+  
+  function addPolicy() {
+      window.open('../policyEntry.html','policy','width=720,height=320,location=no,resizable=no,status=no,toolbar=no');
+  }
   <!--cgi:policy-->
 </script>
 </head>
@@ -62,7 +66,7 @@
 			</table>
 			<table border="0">
 				<tr>
-				<td><button type="button">Add Policy...</button></td>
+				<td><button type="button" onClick="addPolicy()";>Add Policy...</button></td>
 				</tr>
 			</table>
            	<p>&nbsp;</p>
