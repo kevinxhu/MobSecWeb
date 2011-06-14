@@ -11,8 +11,23 @@
 	  this.addr = addr;
 	  this.mask = mask;
   }
-  
+
+  var curIndex = -1;
   var policyList =  new Array();
+  
+  <!--cgi:policy-->
+  
+  function onDelPolicy(name) {
+		document.thisForm.deviceId.value = devId;
+		document.thisForm.polName.value = name;
+		document.thisForm.submit();
+  }
+  
+  function onConfPolicy(ind) {
+	 curIndex = ind;
+	 window.popUpWin = window.open('../policyEntry.html','policy','width=720,height=320,location=no,resizable=no,status=no,toolbar=no');
+     window.popChk = setInterval('if(popUpWin.closed){location.reload();clearInterval(popChk)}',100);
+  }
   
   function printArray() {
       for (var i = 0; i < policyList.length; i++) {
@@ -26,30 +41,43 @@
 		  }
 		  document.write("<td>" + policyList[i].addr + "</td>\n");
 		  document.write("<td>" + policyList[i].mask + "</td>\n");
-		  document.write("<td></td>")
+		  document.write("<td><a onClick=\"onConfPolicy("+ i+");\"><img border=\"0\" src=\"../images/config.jpg\"  width=\"20\" height=\"20\"/></a><a onClick=\"onDelPolicy('"+policyList[i].policyName+"');\"><img border=\"0\" src=\"../images/del.jpg\"  width=\"20\" height=\"20\"/></a></td>\n");
 	  	  document.write("</tr>\n");
 	  }
 	  
 	  if(policyList.length == 0) {
-		document.write("<td colspan=5>No policies</td>");
+		if(devId == "") {
+			document.write("<td colspan=5>No device is selected</td>");
+		}
+		else {
+			document.write("<td colspan=5>No policies</td>");
+		}
 	  }
   }
   
   function addPolicy() {
-      window.open('../policyEntry.html','policy','width=720,height=320,location=no,resizable=no,status=no,toolbar=no');
+      window.popUpWin = window.open('../policyEntry.html','policy','width=720,height=320,location=no,resizable=no,status=no,toolbar=no');
+     window.popChk=setInterval('if(popUpWin.closed){location.reload();clearInterval(popChk)}',100);
   }
-  <!--cgi:policy-->
+  
+  function onLoadFunc() {
+      if(devId == "") {
+	      document.thisForm.addPolicy.disabled = true;
+	  }
+  }
+
 </script>
 </head>
 
-<body>
+<body onLoad="onLoadFunc();">
+<form action="/cgi-bin/policyDel.pl" name="thisForm" method="post" target="_self">
 <div id="container">
 		<div id="content">
         
         <div id="content_top"></div>
         <div id="content_main">
         	<h2>Policy List</h2>
-			<table border="0" cellpadding="5" cellspacing="5" width="100%">
+			<table border="0" cellpadding="5" cellspacing="5" width="100%" style="overflow: auto; max-height: 250px;">
 				<tr>
 				<td>Policy Name</td>
 				<td>Type</td>
@@ -66,7 +94,7 @@
 			</table>
 			<table border="0">
 				<tr>
-				<td><button type="button" onClick="addPolicy()";>Add Policy...</button></td>
+				<td><button type="button" name="addPolicy" onClick="addPolicy()";>Add Policy...</button></td>
 				</tr>
 			</table>
            	<p>&nbsp;</p>
@@ -75,5 +103,8 @@
         </div>
 	<div id="content_bottom"></div>
 </div>
+<input type="hidden" name="deviceId" value="" />
+<input type="hidden" name="polName" value="" />
+</form>
 </body>
 </html>

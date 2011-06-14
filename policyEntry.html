@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="style.css" />
+
+<script type='text/javascript'>
+  function policyObj(policyName, policyType, addr, mask) {
+      this.policyName = policyName;
+	  this.policyType = policyType;
+	  this.addr = addr;
+	  this.mask = mask;
+  }
+  var devId = opener.devId;
+  var curIndex = opener.curIndex;
+  
+  function onOK () {
+	  document.thisForm.deviceId.value = devId;
+      document.thisForm.submit();
+	  window.close();
+  }
+  function onClose() {
+	window.close();
+  }
+  
+  function onLoadFunc() {
+	document.thisForm.polName.value = opener.policyList[curIndex].policyName;
+	document.thisForm.polType.selectedIndex = opener.policyList[curIndex].policyType;
+	document.thisForm.polAddr.value = opener.policyList[curIndex].addr;
+	document.thisForm.polMask.value = opener.policyList[curIndex].mask;
+  }
+  
+</script>
+</head>
+
+<body onLoad="onLoadFunc();">
+<form action="/cgi-bin/policyConf.pl" name="thisForm" method="post" target="_self">
+<div id="container">
+		<div id="content">
+        
+        <div id="content_top"></div>
+        <div id="content_main">
+        	<h2>Policy Entry</h2>
+			<table border="0" cellpadding="5" cellspacing="5" width="100%">
+			<tr>
+				<td>
+					<label for="polName">Policy Name</label>
+					<input type="text" value="" size="20" name="polName">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="polName">Policy Type</label>
+					<select name="polType">
+					  <option value="0" selected>IP Address</option>
+					  <option value="1">Domain Name</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="polName">IP Address(Domain Name)</label>
+					<input type="text" value="" size="20" name="polAddr">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="polName">Network Mask</label>
+					<input type="text" value="" size="20" name="polMask">
+				</td>
+			</tr>
+			</table>
+			<table border="0">
+				<tr>
+				<td><button type="button" onClick="onOK();">OK</button></td>
+				<td><button type="button" onClick="onClose();">Cancel</button></td>
+				</tr>
+			</table>
+           	<p>&nbsp;</p>
+          <p></p>
+<p>&nbsp;</p>
+        </div>
+	<div id="content_bottom"></div>
+</div>
+<input type="hidden" name="deviceId" value="" />
+</form>
+</body>
+</html>
