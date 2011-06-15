@@ -15,6 +15,15 @@
   var curIndex = opener.curIndex;
   
   function onOK () {
+	  var ii;
+	  for(ii = 0; ii < opener.policyList.length; ii++) {
+		if(opener.policyList[ii].policyName == document.thisForm.polName.value) {
+			alert('policy name already exists, please use another one');
+			document.thisForm.polName.focus();
+			return;
+		}
+	  }
+  
 	  document.thisForm.deviceId.value = devId;
       document.thisForm.submit();
 	  window.close();
@@ -23,11 +32,22 @@
 	window.close();
   }
   
+  function onTypeChange() {
+	if(document.thisForm.polType.selectedIndex == 0) {
+		document.thisForm.polMask.disabled = false;
+	}
+	else {
+		document.thisForm.polMask.disabled = true;
+	}
+  }
+  
   function onLoadFunc() {
-	document.thisForm.polName.value = opener.policyList[curIndex].policyName;
-	document.thisForm.polType.selectedIndex = opener.policyList[curIndex].policyType;
-	document.thisForm.polAddr.value = opener.policyList[curIndex].addr;
-	document.thisForm.polMask.value = opener.policyList[curIndex].mask;
+	if(curIndex != -1) {
+		document.thisForm.polName.value = opener.policyList[curIndex].policyName;
+		document.thisForm.polType.selectedIndex = opener.policyList[curIndex].policyType;
+		document.thisForm.polAddr.value = opener.policyList[curIndex].addr;
+		document.thisForm.polMask.value = opener.policyList[curIndex].mask;
+	}
   }
   
 </script>
@@ -51,7 +71,7 @@
 			<tr>
 				<td>
 					<label for="polName">Policy Type</label>
-					<select name="polType">
+					<select name="polType" onChange="onTypeChange();">
 					  <option value="0" selected>IP Address</option>
 					  <option value="1">Domain Name</option>
 					</select>
